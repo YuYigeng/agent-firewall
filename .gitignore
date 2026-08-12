@@ -1,0 +1,9 @@
+/bin/
+/dist/
+/.agent-firewall/
+/.tmp-*/
+/agent-firewall
+coverage.out
+*.test
+*.prof
+.DS_Store

@@ -1,0 +1,54 @@
+version: 2
+
+project_name: agent-firewall
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - id: agent-firewall
+    main: ./cmd/agent-firewall
+    binary: agent-firewall
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - LICENSE
+      - README.md
+      - SECURITY.md
+      - docs/THREAT_MODEL.md
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+sboms:
+  - artifacts: archive
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+release:
+  draft: true
